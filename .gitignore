@@ -3,3 +3,4 @@
 target/
 *.log
 volumes/
+test/java/com/skor/
