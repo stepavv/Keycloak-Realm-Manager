@@ -61,7 +61,7 @@ public class UserInfoService {
         }
 
         System.out.println("                   ");
-        System.out.println("=== USERS INFO ===");
+        System.out.println("=== USER INFO ===");
         System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
         System.out.println("==================");
 
