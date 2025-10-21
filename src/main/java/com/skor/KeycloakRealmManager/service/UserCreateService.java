@@ -1,15 +1,17 @@
 package com.skor.KeycloakRealmManager.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skor.KeycloakRealmManager.config.KeycloakProperties;
-import com.skor.KeycloakRealmManager.dto.UserCreateDto;
+import com.skor.KeycloakRealmManager.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectWriter;
 
-
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserCreateService {
@@ -18,7 +20,7 @@ public class UserCreateService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public String createUser(UserCreateDto user) throws Exception {
+    public String createUser(UserDto user) throws JsonProcessingException {
         String token = authService.getAccessToken();
 
         String url = properties.getServerUrl()
@@ -36,12 +38,9 @@ public class UserCreateService {
         );
 
         if (response.getStatusCode().is2xxSuccessful()) {
-            System.out.println("User created: " + user.getUsername());
             return "User created successfully: " + user.getUsername();
         } else {
-            System.err.println("Failed to create user: " + response.getBody());
             return "Failed to create user: " + response.getStatusCode();
         }
-
     }
 }

@@ -1,6 +1,7 @@
 package com.skor.KeycloakRealmManager.controller;
 
-import com.skor.KeycloakRealmManager.dto.UserInfoDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skor.KeycloakRealmManager.dto.UserWithGroupsDto;
 import com.skor.KeycloakRealmManager.service.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping
-    public List<UserInfoDto> getUserGroups() throws Exception {
+    public List<UserWithGroupsDto> getUserGroups() throws JsonProcessingException {
         return userInfoService.getUserGroups();
     }
 }

@@ -1,5 +1,6 @@
 package com.skor.KeycloakRealmManager.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.skor.KeycloakRealmManager.config.KeycloakProperties;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.ObjectWriter;
 
 
 @Service
@@ -16,7 +18,7 @@ public class AuthService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public String getAccessToken() throws Exception {
+    public String getAccessToken() throws JsonProcessingException {
         String tokenUrl = properties.getServerUrl() + "/realms/" + properties.getRealm()
                 + "/protocol/openid-connect/token";
 

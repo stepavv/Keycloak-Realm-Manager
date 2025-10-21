@@ -1,12 +1,16 @@
 package com.skor.KeycloakRealmManager.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.skor.KeycloakRealmManager.config.KeycloakProperties;
 import com.skor.KeycloakRealmManager.dto.GroupDto;
 import com.skor.KeycloakRealmManager.dto.UserDto;
-import com.skor.KeycloakRealmManager.dto.UserInfoDto;
+import com.skor.KeycloakRealmManager.dto.UserWithGroupsDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.skor.KeycloakRealmManager.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserInfoService {
@@ -24,11 +29,11 @@ public class UserInfoService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<UserInfoDto> getUserGroups() throws Exception {
+    public List<UserWithGroupsDto> getUserGroups() throws JsonProcessingException {
         String token = authService.getAccessToken();
 
         List<UserDto> users = userService.getUsers();
-        List<UserInfoDto> result = new ArrayList<>();
+        List<UserWithGroupsDto> result = new ArrayList<>();
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
@@ -45,25 +50,17 @@ public class UserInfoService {
 
             List<GroupDto> groups = objectMapper.readValue(
                     response.getBody(),
-                    new TypeReference<List<GroupDto>>() {}
+                    new TypeReference<>() {}
             );
 
-            UserInfoDto dto = new UserInfoDto();
-            dto.setId(user.getId());
-            dto.setUsername(user.getUsername());
-            dto.setFirstName(user.getFirstName());
-            dto.setLastName(user.getLastName());
-            dto.setEmail(user.getEmail());
-            dto.setEnabled(user.isEnabled());
-            dto.setGroups(groups);
+            UserWithGroupsDto dto = UserMapper.INSTANCE.toDto(user, groups);
 
             result.add(dto);
         }
 
-        System.out.println("                   ");
-        System.out.println("=== USER INFO ===");
-        System.out.println(objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(result));
-        System.out.println("==================");
+        ObjectWriter writer = objectMapper.writerWithDefaultPrettyPrinter();
+        String output = writer.writeValueAsString(result);
+        log.info(output);
 
         return result;
     }

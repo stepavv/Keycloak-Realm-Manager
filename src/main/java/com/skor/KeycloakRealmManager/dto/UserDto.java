@@ -1,8 +1,6 @@
 package com.skor.KeycloakRealmManager.dto;
 
 import lombok.Data;
-import java.util.Map;
-
 
 @Data
 public class UserDto {
@@ -12,4 +10,5 @@ public class UserDto {
     private String lastName;
     private String email;
     private boolean enabled;
+    private boolean emailVerified;
 }

@@ -1,6 +1,7 @@
 package com.skor.KeycloakRealmManager.controller;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skor.KeycloakRealmManager.dto.UserDto;
 import com.skor.KeycloakRealmManager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    private List<UserDto> getUsers() throws Exception {
+    private List<UserDto> getUsers() throws JsonProcessingException {
         return userService.getUsers();
     }
 }

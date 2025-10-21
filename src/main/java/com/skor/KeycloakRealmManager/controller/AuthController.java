@@ -1,5 +1,6 @@
 package com.skor.KeycloakRealmManager.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skor.KeycloakRealmManager.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ public class AuthController {
     private final AuthService authService;
 
     @GetMapping("/token")
-    public String getToken() throws Exception {
+    public String getToken() throws JsonProcessingException {
         return  authService.getAccessToken();
     }
 

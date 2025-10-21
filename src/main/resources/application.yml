@@ -5,4 +5,4 @@ keycloak:
   server-url: http://localhost:8080
   realm: myrealm
   client-id: m2m-client
-  client-secret: qJI4zR6fwEGWkpy2kDT33iu7thR8lt5K
+  client-secret: ${KEYCLOAK_CLIENT_SECRET}

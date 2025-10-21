@@ -1,5 +1,6 @@
 package com.skor.KeycloakRealmManager.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.skor.KeycloakRealmManager.config.KeycloakProperties;
 import com.skor.KeycloakRealmManager.dto.UserDto;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class UserService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<UserDto> getUsers() throws Exception {
+    public List<UserDto> getUsers() throws JsonProcessingException {
         String token = authService.getAccessToken();
 
         String usersUrl = properties.getServerUrl()
@@ -37,7 +38,7 @@ public class UserService {
 
         List<UserDto> users = objectMapper.readValue(
                 response.getBody(),
-                new TypeReference<List<UserDto>>() {}
+                new TypeReference<>() {}
         );
 
         return users;

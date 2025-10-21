@@ -1,6 +1,7 @@
 package com.skor.KeycloakRealmManager.controller;
 
-import com.skor.KeycloakRealmManager.dto.UserCreateDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.skor.KeycloakRealmManager.dto.UserDto;
 import com.skor.KeycloakRealmManager.service.UserCreateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ public class UserCreateController {
     private final UserCreateService userCreateService;
 
     @PostMapping("/create")
-    public String createUser(@RequestBody UserCreateDto user) throws Exception {
+    public String createUser(@RequestBody UserDto user) throws JsonProcessingException {
         return userCreateService.createUser(user);
     }
 
